@@ -3,7 +3,7 @@ from sqlmodel import SQLModel, Field
 
 
 class UserBase(SQLModel):
-    username: str = Field(index=True, unique=True)
+    username: str
     display_name: str
 
 

@@ -19,6 +19,11 @@ class MessagePublic(MessageBase):
 
 
 class MessageCreate(MessageBase):
+    """Create schema for posting a message.
+    
+    Note: channel_id is extracted from URL path (e.g., POST /channels/{channel_id}/messages),
+    author_id from authentication context
+    """
     pass
 
 

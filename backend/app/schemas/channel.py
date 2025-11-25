@@ -21,6 +21,7 @@ class ChannelCreate(ChannelBase):
 
 
 class ChannelUpdate(SQLModel):
+    slug: str | None = None
     name: str | None = None
     description: str | None = None
     visibility: Literal["public", "private"] | None = None
@@ -37,5 +38,10 @@ class ChannelMemberPublic(ChannelMemberBase):
     joined_at: datetime
 
 
-class ChannelMemberCreate(ChannelMemberBase):
-    pass
+class ChannelMemberCreate(SQLModel):
+    """Create schema for adding a member to a channel.
+    
+    Note: channel_id comes from URL path (e.g., POST /channels/{channel_id}/members)
+    """
+    user_id: int
+    role: Literal["owner", "admin", "member"] = "member"

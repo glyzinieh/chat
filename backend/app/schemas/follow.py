@@ -12,5 +12,10 @@ class FollowPublic(FollowBase):
     created_at: datetime
 
 
-class FollowCreate(FollowBase):
+class FollowCreate(SQLModel):
+    """Create schema for following a channel.
+    
+    Note: user_id extracted from authentication context,
+    channel_id from URL path (e.g., POST /channels/{channel_id}/follow)
+    """
     pass

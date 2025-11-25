@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from sqlmodel import Field, SQLModel
+from sqlalchemy import UniqueConstraint
 
 
 class Channel(SQLModel, table=True):
@@ -13,6 +14,10 @@ class Channel(SQLModel, table=True):
 
 
 class ChannelMember(SQLModel, table=True):
+    __table_args__ = (
+        UniqueConstraint("channel_id", "user_id", name="uq_channelmember_channel_user"),
+    )
+
     id: int | None = Field(default=None, primary_key=True)
     channel_id: int = Field(foreign_key="channel.id", index=True)
     user_id: int = Field(foreign_key="user.id", index=True)
