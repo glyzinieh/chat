@@ -1,25 +1,22 @@
+from datetime import datetime
 from sqlmodel import SQLModel, Field
 
 
 class UserBase(SQLModel):
     username: str = Field(index=True, unique=True)
+    display_name: str
 
 
-class UserProfileBase(SQLModel):
-    name: str
-    icon_url: str | None = None
-
-
-class UserPublic(UserBase, UserProfileBase):
+class UserPublic(UserBase):
     id: int
+    created_at: datetime
 
 
-class UserCreate(UserBase, UserProfileBase):
+class UserCreate(UserBase):
     password: str
 
 
-class UserUpdate(UserBase, UserProfileBase):
+class UserUpdate(SQLModel):
     username: str | None = None
+    display_name: str | None = None
     password: str | None = None
-    name: str | None = None
-    icon_url: str | None = None
