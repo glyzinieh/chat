@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from enum import Enum
 from typing import TYPE_CHECKING
 
 from sqlmodel import Field, Relationship, SQLModel
@@ -8,6 +9,12 @@ if TYPE_CHECKING:
     from .message import Message
     from .channel_member import ChannelMember
     from .follow import Follow
+
+
+class ChannelVisibility(str, Enum):
+    """Channel visibility options."""
+    PUBLIC = "public"
+    PRIVATE = "private"
 
 
 class Channel(SQLModel, table=True):

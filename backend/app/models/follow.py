@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
+from sqlalchemy import UniqueConstraint
 from sqlmodel import Field, Relationship, SQLModel
 
 if TYPE_CHECKING:
@@ -13,6 +14,10 @@ class Follow(SQLModel, table=True):
     
     Used to determine which channels appear in a user's timeline.
     """
+    __table_args__ = (
+        UniqueConstraint("user_id", "channel_id", name="uq_follow_user_channel"),
+    )
+    
     id: int | None = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="user.id", index=True)
     channel_id: int = Field(foreign_key="channel.id", index=True)

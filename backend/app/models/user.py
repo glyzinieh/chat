@@ -5,7 +5,6 @@ from sqlmodel import Field, Relationship
 from ..schemas.user import UserBase, UserProfileBase
 
 if TYPE_CHECKING:
-    from . import UserProfile
     from .channel import Channel
     from .channel_member import ChannelMember
     from .follow import Follow

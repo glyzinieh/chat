@@ -1,8 +1,8 @@
 """Add Channel, Message, and related tables
 
-Revision ID: 96cf13fd09d4
+Revision ID: 8f257ee5497b
 Revises: 055e30a3ea0a
-Create Date: 2025-11-26 03:34:55.826677
+Create Date: 2025-11-26 03:39:49.854004
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = '96cf13fd09d4'
+revision: str = '8f257ee5497b'
 down_revision: Union[str, Sequence[str], None] = '055e30a3ea0a'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -54,7 +54,8 @@ def upgrade() -> None:
     sa.Column('joined_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['channel_id'], ['channel.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('channel_id', 'user_id', name='uq_channelmember_channel_user')
     )
     op.create_index(op.f('ix_channelmember_channel_id'), 'channelmember', ['channel_id'], unique=False)
     op.create_index(op.f('ix_channelmember_user_id'), 'channelmember', ['user_id'], unique=False)
@@ -65,7 +66,8 @@ def upgrade() -> None:
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['channel_id'], ['channel.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('user_id', 'channel_id', name='uq_follow_user_channel')
     )
     op.create_index(op.f('ix_follow_channel_id'), 'follow', ['channel_id'], unique=False)
     op.create_index(op.f('ix_follow_user_id'), 'follow', ['user_id'], unique=False)
@@ -99,7 +101,8 @@ def upgrade() -> None:
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['message_id'], ['message.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('message_id', 'user_id', 'type', name='uq_reaction_message_user_type')
     )
     op.create_index(op.f('ix_reaction_message_id'), 'reaction', ['message_id'], unique=False)
     op.create_index(op.f('ix_reaction_user_id'), 'reaction', ['user_id'], unique=False)
